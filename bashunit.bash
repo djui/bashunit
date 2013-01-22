@@ -30,6 +30,16 @@
 #
 # The return code is equal to the amount of failed testcases.
 #
+# Options can be given to the test script:
+#
+# $ bash ./bashunit.bash
+# Usage: <testscript> [options...]
+#
+# Options:
+#   -v, --verbose  Print exptected and provided values
+#   -s, --summary  Only print summary omitting individual test results
+#   -q, --quiet    Do not print anything to standard output
+#   -h, --help     Show usage screen
 
 ########################################################################
 # DEPENDENCIES
@@ -85,7 +95,7 @@
 # GLOBALS
 ########################################################################
 
-verbose=
+verbose=2
 
 bashunit_passed=0
 bashunit_failed=0
@@ -141,8 +151,10 @@ _failed() {
 
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
-    echo -e "\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m"
-    if [ $verbose ] ; then
+    if [ $verbose -ge 2 ] ; then
+        echo -e "\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m"
+    fi
+    if [ $verbose -eq 3 ] ; then
         echo -e "\033[31mExpected\033[0m: $2"
         echo -e "\033[31mProvided\033[0m: $1"
     fi
@@ -153,8 +165,9 @@ _passed() {
 
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
-
-    echo -e "\033[37;1m$tc\033[0m:$line:\033[32mPassed\033[0m"
+    if [ $verbose -ge 2 ] ; then
+        echo -e "\033[37;1m$tc\033[0m:$line:\033[32mPassed\033[0m"
+    fi
 }
 
 _skipped() {
@@ -162,19 +175,38 @@ _skipped() {
 
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
-    echo -e "\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m"
+    if [ $verbose -ge 2 ] ; then
+        echo -e "\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m"
+    fi
 }
 
 ########################################################################
 # RUN
 ########################################################################
 
+usage() {
+    echo "Usage: <testscript> [options...]"
+    echo
+    echo "Options:"
+    echo "  -v, --verbose  Print exptected and provided values"
+    echo "  -s, --summary  Only print summary omitting individual test results"
+    echo "  -q, --quiet    Do not print anything to standard output"
+    echo "  -h, --help     Show usage screen"
+}
+
 runTests() {
     local test_pattern="test[a-zA-Z0-9_]\+"
     local testcases=$(grep "^ *\(function \)*$test_pattern *\\(\\)" $0 | \
         grep -o $test_pattern)
+
+    if [ ! "${testcases[*]}" ] ; then
+        usage
+        exit 0
+    fi
+
     for tc in $testcases ; do $tc ; done
 
+    if [ $verbose -ge 1 ] ; then
         echo "Done. $bashunit_passed passed." \
              "$bashunit_failed failed." \
              "$bashunit_skipped skipped."
@@ -186,7 +218,10 @@ runTests() {
 while [ $# -gt 0 ]; do
     arg=$1; shift
     case $arg in
-        "-v"|"--verbose") verbose=1;;
+        "-v"|"--verbose") verbose=3;;
+        "-s"|"--summary") verbose=1;;
+        "-q"|"--quiet")   verbose=0;;
+        "-h"|"--help")    usage; exit 0;;
         *) shift;;
     esac
 done
