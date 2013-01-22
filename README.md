@@ -76,3 +76,8 @@ Functions starting with 'test' will be automatically evaluated.
 * `skip()`
 
     Skip the current test case.
+
+## License
+
+`bashunit` is licenced under a
+[BSD License](https://github.com/djui/bashunit/blob/master/LICENSE).
