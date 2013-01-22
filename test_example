@@ -5,4 +5,4 @@ testEcho() {
     assertReturn "$(echo foo)" 0
 }
 
-source $(dirname $0)/shunit
+source $(dirname $0)/bashunit.bash

@@ -17,7 +17,7 @@
 # 2) Include this script at the end of your test script
 #
 #    :
-#    source $(dirname $0)/shunit
+#    source $(dirname $0)/bashunit.bash
 #
 # Dependencies are: Bash (BASH_LINENO), Shell colors.
 
@@ -27,9 +27,9 @@
 
 verbose=
 
-shunit_passed=0
-shunit_failed=0
-shunit_skipped=0
+bashunit_passed=0
+bashunit_failed=0
+bashunit_skipped=0
 
 ########################################################################
 # ASSERT FUNCTIONS
@@ -41,8 +41,8 @@ runTests() {
 
     for tc in $testcases ; do $tc ; done
 
-    echo "Done. $shunit_passed passed. $shunit_failed failed. $shunit_skipped skipped."
-    exit $shunit_failed
+    echo "Done. $bashunit_passed passed. $bashunit_failed failed. $bashunit_skipped skipped."
+    exit $bashunit_failed
 }
 
 # $1: Output
@@ -87,7 +87,7 @@ skip() {
 }
 
 _failed() {
-    shunit_failed=$((shunit_failed+1))
+    bashunit_failed=$((bashunit_failed+1))
 
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
@@ -99,7 +99,7 @@ _failed() {
 }
 
 _passed() {
-    shunit_passed=$((shunit_passed+1))
+    bashunit_passed=$((bashunit_passed+1))
 
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
@@ -108,7 +108,7 @@ _passed() {
 }
 
 _skipped() {
-    shunit_skipped=$((shunit_skipped+1))
+    bashunit_skipped=$((bashunit_skipped+1))
 
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
