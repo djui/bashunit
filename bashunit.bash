@@ -92,16 +92,6 @@ bashunit_skipped=0
 # ASSERT FUNCTIONS
 ########################################################################
 
-runTests() {
-    local test_pattern="test[a-zA-Z0-9_]\+"
-    local testcases=$(grep "^ *\(function \)*$test_pattern *\\(\\)" $0 | grep -o $test_pattern)
-
-    for tc in $testcases ; do $tc ; done
-
-    echo "Done. $bashunit_passed passed. $bashunit_failed failed. $bashunit_skipped skipped."
-    exit $bashunit_failed
-}
-
 # $1: Output
 # $2: Expected
 assertEqual() {
@@ -175,6 +165,16 @@ _skipped() {
 ########################################################################
 # RUN
 ########################################################################
+
+runTests() {
+    local test_pattern="test[a-zA-Z0-9_]\+"
+    local testcases=$(grep "^ *\(function \)*$test_pattern *\\(\\)" $0 | \
+        grep -o $test_pattern)
+    for tc in $testcases ; do $tc ; done
+
+    fi
+    exit $bashunit_failed
+}
 
 # Arguments
 while [ $# -gt 0 ]; do
