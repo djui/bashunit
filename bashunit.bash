@@ -175,6 +175,9 @@ runTests() {
         grep -o $test_pattern)
     for tc in $testcases ; do $tc ; done
 
+        echo "Done. $bashunit_passed passed." \
+             "$bashunit_failed failed." \
+             "$bashunit_skipped skipped."
     fi
     exit $bashunit_failed
 }
