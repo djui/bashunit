@@ -35,6 +35,21 @@ testEcho:5:Passed
 Done. 2 passed. 0 failed. 0 skipped.
 ```
 
+The return code is equal to the amount of failed testcases.
+
+Options can be given to the test script:
+
+```bash
+$ bash ./bashunit.bash
+Usage: <testscript> [options...]
+
+Options:
+  -v, --verbose  Print exptected and provided values
+  -s, --summary  Only print summary omitting individual test results
+  -q, --quiet    Do not print anything to standard output
+  -h, --help     Show usage screen
+```
+
 ## Dependencies
 
 * Bash (`BASH_LINENO`)
