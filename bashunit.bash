@@ -27,6 +27,9 @@
 #    testEcho:4:Passed
 #    testEcho:5:Passed
 #    Done. 2 passed. 0 failed. 0 skipped.
+#
+# The return code is equal to the amount of failed testcases.
+#
 
 ########################################################################
 # DEPENDENCIES
