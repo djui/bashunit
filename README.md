@@ -9,7 +9,7 @@ successor [shUnit2](https://code.google.com/p/shunit2/).
 
 Functions starting with 'test' will be automatically evaluated.
 
-1. Write test cases
+**1. Write test cases**
 
 ```bash
 testEcho() {
@@ -18,7 +18,7 @@ testEcho() {
 }
 ```
 
-2. Include this script at the end of your test script
+**2. Include this script at the end of your test script**
 
 ```bash
 source $(dirname $0)/bashunit.bash
@@ -26,7 +26,7 @@ source $(dirname $0)/bashunit.bash
 # eof
 ```
 
-3. Run test suite
+**3. Run test suite**
 
 ```bash
 $ ./test_example
