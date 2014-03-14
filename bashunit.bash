@@ -52,6 +52,11 @@
 # API
 ########################################################################
 
+# * assert($1)
+#     $1: Expression to evaluate
+#
+#     Assert that a given expression evaluates to true.
+
 # * assertEqual($1, $2)
 #     $1: Output
 #     $2: Expected
@@ -104,6 +109,11 @@ bashunit_skipped=0
 ########################################################################
 # ASSERT FUNCTIONS
 ########################################################################
+
+# $1: Expression
+assert() {
+    if test $* ; then _passed ; else _failed "$*" true ; fi
+}
 
 # $1: Output
 # $2: Expected
