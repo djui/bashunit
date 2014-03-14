@@ -112,7 +112,7 @@ bashunit_skipped=0
 
 # $1: Expression
 assert() {
-    if test $* ; then _passed ; else _failed "$@" true ; fi
+    if test $* ; then _passed ; else _failed "$*" true ; fi
 }
 
 # $1: Output
