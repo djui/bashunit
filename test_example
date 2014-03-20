@@ -3,6 +3,10 @@
 testEcho() {
     assertEqual "$(echo foo)" "foo"
     assertReturn "$(echo foo)" 0
+    assertGreaterThan "$(( 1 + 1 ))" "1"
+    assertAtLeast "$(( 1 + 1 ))" "2"
+    assertLessThan "$(( 1 + 1 ))" "5"
+    assertAtMost "$(( 1 + 1 ))" "2"
 }
 
 source $(dirname $0)/bashunit.bash
