@@ -3,6 +3,13 @@
 testEcho() {
     assertEqual "$(echo foo)" "foo"
     assertReturn "$(echo foo)" 0
+}
+
+testTest() {
+    assert "-e $0"
+}
+
+testArithmetic() {
     assertGreaterThan "$(( 1 + 1 ))" "1"
     assertAtLeast "$(( 1 + 1 ))" "2"
     assertLessThan "$(( 1 + 1 ))" "5"
