@@ -152,6 +152,30 @@ assertNotReturn() {
     if [ $code -ne $2 ] ; then _passed ; else _failed "$code" "$2" ; fi
 }
 
+# $1: Output
+# $2: Expected
+assertGreaterThan() {
+    if [ $1 -gt $2 ] ; then _passed ; else _failed "$1" "$2" ; fi
+}
+
+# $1: Output
+# $2: Expected
+assertAtLeast() {
+    if [ $1 -ge $2 ] ; then _passed ; else _failed "$1" "$2" ; fi
+}
+
+# $1: Output
+# $2: Expected
+assertLessThan() {
+    if [ $1 -lt $2 ] ; then _passed ; else _failed "$1" "$2" ; fi
+}
+
+# $1: Output
+# $2: Expected
+assertAtMost() {
+    if [ $1 -le $2 ] ; then _passed ; else _failed "$1" "$2" ; fi
+}
+
 skip() {
     _skipped
 }
