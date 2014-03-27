@@ -57,6 +57,12 @@ Options:
 
 ## API
 
+* `assert($1)`
+
+    `$1`: Expression
+
+    Assert that a given expression evaluates to true.
+
 * `assertEqual($1, $2)`
 
     `$1`: Output
@@ -71,8 +77,7 @@ Options:
 
     `$2`: Expected
 
-    Assert that a given output string is not equal to an expected
-    string.
+    Assert that a given output string is not equal to an expected string.
 
 * `assertStartsWith($1, $2)`
 
@@ -90,8 +95,7 @@ Options:
 
     `$?`: Provided
 
-    Assert that the last command's return code is equal to an expected
-    integer.
+    Assert that the last command's return code is equal to an expected integer.
 
 * `assertNotReturn($1, $2)`
 
@@ -101,8 +105,40 @@ Options:
 
     `$?`: Provided
 
-    Assert that the last command's return code is not equal to an
-    expected integer.
+    Assert that the last command's return code is not equal to an expected
+    integer.
+
+* `assertGreaterThan($1, $2)`
+
+    `$1` Output
+
+    `$2` Expected
+
+    Assert that a given integer is greater than an expected integer.
+
+* `assertAtLeast($1, $2)`
+
+    `$1` Output
+
+    `$2` Expected
+
+    Assert that a given integer is greater than or equal to an expected integer.
+
+* `assertLessThan($1, $2)`
+
+    `$1` Output
+
+    `$2` Expected
+
+    Assert that a given integer is less than an expected integer.
+
+* `assertAtMost($1, $2)`
+
+    `$1` Output
+
+    `$2` Expected
+
+    Assert that a given integer is less than or equal to an expected integer.
 
 * `skip()`
 
