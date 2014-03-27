@@ -1,102 +1,6 @@
 #!/bin/bash
 
 ########################################################################
-# USAGE
-########################################################################
-
-# Functions starting with 'test' will be automatically evaluated.
-#
-# 1. Write test cases
-#
-#     :
-#     testEcho() {
-#         assertEqual "$(echo foo)" "foo"
-#         assertReturn "$(echo foo)" 0
-#     }
-#     :
-#
-# 2. Include this script at the end of your test script
-#
-#    :
-#    source $(dirname $0)/bashunit.bash
-#    # eof
-#
-# 3. Run test suite
-#
-#    $ ./test_example
-#    testEcho:4:Passed
-#    testEcho:5:Passed
-#    Done. 2 passed. 0 failed. 0 skipped.
-#
-# The return code is equal to the amount of failed testcases.
-#
-# Options can be given to the test script:
-#
-# $ bash ./bashunit.bash
-# Usage: <testscript> [options...]
-#
-# Options:
-#   -v, --verbose  Print exptected and provided values
-#   -s, --summary  Only print summary omitting individual test results
-#   -q, --quiet    Do not print anything to standard output
-#   -h, --help     Show usage screen
-
-########################################################################
-# DEPENDENCIES
-########################################################################
-
-# * Bash (BASH_LINENO)
-# * Shell colours
-
-########################################################################
-# API
-########################################################################
-
-# * assert($1)
-#     $1: Expression to evaluate
-#
-#     Assert that a given expression evaluates to true.
-
-# * assertEqual($1, $2)
-#     $1: Output
-#     $2: Expected
-#
-#     Assert that a given output string is equal to an expected string.
-
-# * assertNotEqual($1, $2)
-#     $1: Output
-#     $2: Expected
-#
-#     Assert that a given output string is not equal to an expected
-#     string.
-
-# * assertStartsWith($1, $2)
-#     $1: Output
-#     $2: Expected
-#
-#     Assert that a given output string starts with an expected string.
-
-# * assertReturn($1, $2)
-#     $1: Output
-#     $2: Expected
-#     $?: Provided
-#
-#     Assert that the last command's return code is equal to an expected
-#     integer.
-
-# * assertNotReturn($1, $2)
-#     $1: Output
-#     $2: Expected
-#     $?: Provided
-#
-#     Assert that the last command's return code is not equal to an
-#     expected integer.
-
-# * skip()
-#
-#     Skip the current test case.
-
-########################################################################
 # GLOBALS
 ########################################################################
 
@@ -110,11 +14,15 @@ bashunit_skipped=0
 # ASSERT FUNCTIONS
 ########################################################################
 
+# Assert that a given expression evaluates to true.
+#
 # $1: Expression
 assert() {
     if test $* ; then _passed ; else _failed "$*" true ; fi
 }
 
+# Assert that a given output string is equal to an expected string.
+#
 # $1: Output
 # $2: Expected
 assertEqual() {
@@ -122,6 +30,8 @@ assertEqual() {
     if [ $? -eq 0 ] ; then _passed ; else _failed "$1" "$2" ; fi
 }
 
+# Assert that a given output string is not equal to an expected string.
+#
 # $1: Output
 # $2: Expected
 assertNotEqual() {
@@ -129,6 +39,8 @@ assertNotEqual() {
     if [ $? -ne 0 ] ; then _passed ; else _failed "$1" "$2" ; fi
 }
 
+# Assert that a given output string starts with an expected string.
+#
 # $1: Output
 # $2: Expected
 assertStartsWith() {
@@ -136,6 +48,8 @@ assertStartsWith() {
     if [ $? -eq 0 ] ; then _passed ; else _failed "$1" "$2" ; fi
 }
 
+# Assert that the last command's return code is equal to an expected integer.
+#
 # $1: Output
 # $2: Expected
 # $?: Provided
@@ -144,6 +58,8 @@ assertReturn() {
     if [ $code -eq $2 ] ; then _passed ; else _failed "$code" "$2" ; fi
 }
 
+# Assert that the last command's return code is not equal to an expected integer.
+#
 # $1: Output
 # $2: Expected
 # $?: Provided
@@ -152,30 +68,40 @@ assertNotReturn() {
     if [ $code -ne $2 ] ; then _passed ; else _failed "$code" "$2" ; fi
 }
 
+# Assert that a given integer is greater than an expected integer.
+#
 # $1: Output
 # $2: Expected
 assertGreaterThan() {
     if [ $1 -gt $2 ] ; then _passed ; else _failed "$1" "$2" ; fi
 }
 
+# Assert that a given integer is greater than or equal to an expected integer.
+#
 # $1: Output
 # $2: Expected
 assertAtLeast() {
     if [ $1 -ge $2 ] ; then _passed ; else _failed "$1" "$2" ; fi
 }
 
+# Assert that a given integer is less than an expected integer.
+#
 # $1: Output
 # $2: Expected
 assertLessThan() {
     if [ $1 -lt $2 ] ; then _passed ; else _failed "$1" "$2" ; fi
 }
 
+# Assert that a given integer is less than or equal to an expected integer.
+#
 # $1: Output
 # $2: Expected
 assertAtMost() {
     if [ $1 -le $2 ] ; then _passed ; else _failed "$1" "$2" ; fi
 }
 
+# Skip the current test case.
+#
 skip() {
     _skipped
 }
