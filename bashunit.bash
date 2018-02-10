@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+caller=$0
 ########################################################################
 # GLOBALS
 ########################################################################
@@ -112,7 +113,8 @@ _failed() {
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
     if [ $verbose -ge 2 ] ; then
-        echo -e "\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m"
+        failed_line="sed -n -e '$line p' $caller"
+        echo -e "\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m:`eval $failed_line`"
     fi
     if [ $verbose -eq 3 ] ; then
         echo -e "\033[31mExpected\033[0m: $2"
@@ -136,7 +138,8 @@ _skipped() {
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
     if [ $verbose -ge 2 ] ; then
-        echo -e "\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m"
+        skipped_line="sed -n -e '$line s/skip //; $line p' $caller"
+        echo -e "\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m:`eval $skipped_line`"
     fi
 }
 
