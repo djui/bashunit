@@ -113,8 +113,12 @@ _failed() {
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
     if [ $verbose -ge 2 ] ; then
-        failed_line="sed -n -e '$line p' $caller"
-        echo -e "\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m:`eval $failed_line`"
+        if [ $lineshow -eq 1 ]; then
+            failed_line=":`eval \"sed -n -e '$line p' $caller\"`"
+        else
+            failed_line=
+        fi
+        echo -e "\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m${failed_line}"
     fi
     if [ $verbose -eq 3 ] ; then
         echo -e "\033[31mExpected\033[0m: $2"
@@ -138,8 +142,12 @@ _skipped() {
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
     if [ $verbose -ge 2 ] ; then
-        skipped_line="sed -n -e '$line s/skip //; $line p' $caller"
-        echo -e "\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m:`eval $skipped_line`"
+        if [ $lineshow -eq 1 ]; then
+            skipped_line=":`eval \"sed -n -e '$line s/skip //; $line p' $caller\"`"
+        else
+            skipped_line=
+        fi
+        echo -e "\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m${skipped_line}"
     fi
 }
 
@@ -154,6 +162,7 @@ usage() {
     echo "  -v, --verbose  Print exptected and provided values"
     echo "  -s, --summary  Only print summary omitting individual test results"
     echo "  -q, --quiet    Do not print anything to standard output"
+    echo "  -l, --lineshow Show failing or skipped line after line number"
     echo "  -h, --help     Show usage screen"
 }
 
@@ -178,12 +187,14 @@ runTests() {
 }
 
 # Arguments
+lineshow=0
 while [ $# -gt 0 ]; do
     arg=$1; shift
     case $arg in
         "-v"|"--verbose") verbose=3;;
         "-s"|"--summary") verbose=1;;
         "-q"|"--quiet")   verbose=0;;
+        "-l"|"--lineshow") lineshow=1;;
         "-h"|"--help")    usage; exit 0;;
         *) shift;;
     esac
