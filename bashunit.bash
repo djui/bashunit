@@ -171,7 +171,7 @@ usage() {
 
 runTests() {
     local test_pattern="test[a-zA-Z0-9_]\+"
-    local testcases=$(grep "^ *\(function \)*$test_pattern *\\(\\)" $0 | \
+    local testcases=$(grep "^ *\(function \)*$test_pattern *\\(\\)" $caller | \
         grep -o $test_pattern)
 
     if [ ! "${testcases[*]}" ] ; then
