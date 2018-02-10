@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-caller=$0
+/usr/bin/env bash --version
+
 ########################################################################
 # GLOBALS
 ########################################################################
 
 verbose=2
+caller=$0
+lineshow=0
 
 bashunit_passed=0
 bashunit_failed=0
@@ -112,9 +115,10 @@ _failed() {
 
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
+    local my_source="eval sed -n -e \"$line p\" $caller"
     if [ $verbose -ge 2 ] ; then
         if [ $lineshow -eq 1 ]; then
-            failed_line=":`eval \"sed -n -e '$line p' $caller\"`"
+            failed_line=":$($my_source)"
         else
             failed_line=
         fi
@@ -141,9 +145,10 @@ _skipped() {
 
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
+    local my_source="eval sed -n -e \"$line s/skip //; $line p\" $caller"
     if [ $verbose -ge 2 ] ; then
         if [ $lineshow -eq 1 ]; then
-            skipped_line=":`eval \"sed -n -e '$line s/skip //; $line p' $caller\"`"
+            skipped_line=":$($my_source)"
         else
             skipped_line=
         fi
@@ -159,11 +164,11 @@ usage() {
     echo "Usage: <testscript> [options...]"
     echo
     echo "Options:"
-    echo "  -v, --verbose  Print exptected and provided values"
-    echo "  -s, --summary  Only print summary omitting individual test results"
-    echo "  -q, --quiet    Do not print anything to standard output"
-    echo "  -l, --lineshow Show failing or skipped line after line number"
-    echo "  -h, --help     Show usage screen"
+    echo "  -v, --verbose   Print exptected and provided values"
+    echo "  -s, --summary   Only print summary omitting individual test results"
+    echo "  -q, --quiet     Do not print anything to standard output"
+    echo "  -l, --lineshow  Show failing or skipped line after line number"
+    echo "  -h, --help      Show usage screen"
 }
 
 runTests() {
@@ -187,7 +192,6 @@ runTests() {
 }
 
 # Arguments
-lineshow=0
 while [ $# -gt 0 ]; do
     arg=$1; shift
     case $arg in
