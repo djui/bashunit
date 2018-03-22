@@ -174,9 +174,8 @@ usage() {
 
 runTests() {
     local test_pattern="test[a-zA-Z0-9_]\+"
-    local testcases=$(declare -f | \
-        sed -ne '/'"$test_pattern"' () *$/ { s/() *$// ; p }' | \
-        grep -o $test_pattern)
+    local testcases=$(declare -F | \
+        sed -ne '/'"$test_pattern"'$/ { s/declare -f // ; p }')
 
     if [ ! "${testcases[*]}" ] ; then
         usage
