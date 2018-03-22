@@ -111,46 +111,49 @@ skip() {
 _failed() {
     bashunit_failed=$((bashunit_failed+1))
 
+    local ts=${BASH_SOURCE[2]}
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
-    local my_source="eval sed -n -e \"$line p\" $caller"
+    local my_source="eval sed -n -e \"$line p\" ${BASH_SOURCE[2]}"
     if [ $verbose -ge 2 ] ; then
         if [ $lineshow -eq 1 ]; then
             failed_line=":$($my_source)"
         else
             failed_line=
         fi
-        echo -e "\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m${failed_line}"
+        echo -e "$ts:\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m${failed_line}"
     fi
     if [ $verbose -eq 3 ] ; then
-        echo -e "\033[31mExpected\033[0m: $2"
-        echo -e "\033[31mProvided\033[0m: $1"
+        echo -e "\033[31mExpected\033[0m: $(sed '2,$ s/^/          /g' <<<$2)"
+        echo -e "\033[31mProvided\033[0m: $(sed '2,$ s/^/          /g' <<<$1)"
     fi
 }
 
 _passed() {
     bashunit_passed=$((bashunit_passed+1))
 
+    local ts=${BASH_SOURCE[2]}
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
     if [ $verbose -ge 2 ] ; then
-        echo -e "\033[37;1m$tc\033[0m:$line:\033[32mPassed\033[0m"
+        echo -e "$ts:\033[37;1m$tc\033[0m:$line:\033[32mPassed\033[0m"
     fi
 }
 
 _skipped() {
     bashunit_skipped=$((bashunit_skipped+1))
 
+    local ts=${BASH_SOURCE[2]}
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
-    local my_source="eval sed -n -e \"$line s/skip //; $line p\" $caller"
+    local my_source="eval sed -n -e \"$line s/skip //; $line p\" ${BASH_SOURCE[2]}"
     if [ $verbose -ge 2 ] ; then
         if [ $lineshow -eq 1 ]; then
             skipped_line=":$($my_source)"
         else
             skipped_line=
         fi
-        echo -e "\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m${skipped_line}"
+        echo -e "$ts:\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m${skipped_line}"
     fi
 }
 
@@ -171,7 +174,8 @@ usage() {
 
 runTests() {
     local test_pattern="test[a-zA-Z0-9_]\+"
-    local testcases=$(grep "^ *\(function \)*$test_pattern *\\(\\)" $caller | \
+    local testcases=$(declare -f | \
+        sed -ne '/'"$test_pattern"' () *$/ { s/() *$// ; p }' | \
         grep -o $test_pattern)
 
     if [ ! "${testcases[*]}" ] ; then
