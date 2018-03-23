@@ -186,6 +186,9 @@ runTests() {
 
     for tc in $testcases ; do $tc ; done
 
+    if [ $verbose -gt 1 ] ; then
+        printf "\033[K"
+    fi
     if [ $verbose -ge 1 ] ; then
         echo "Done. $bashunit_passed passed." \
              "$bashunit_failed failed." \
