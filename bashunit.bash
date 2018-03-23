@@ -137,7 +137,7 @@ _passed() {
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
     if [ $verbose -ge 2 ] ; then
-        printf "$ts:\033[37;1m$tc\033[0m:$line:\033[32mPassed\033[0m$eol"
+        printf "\033[K$ts:\033[37;1m$tc\033[0m:$line:\033[32mPassed\033[0m$eol"
     fi
 }
 
@@ -154,7 +154,7 @@ _skipped() {
         else
             skipped_line=
         fi
-        printf "$ts:\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m${skipped_line}$eol"
+        printf "\033[K$ts:\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m${skipped_line}$eol"
     fi
 }
 
@@ -202,7 +202,7 @@ while [ $# -gt 0 ]; do
         "-s"|"--summary") verbose=1;;
         "-q"|"--quiet")   verbose=0;;
         "-l"|"--lineshow") lineshow=1;;
-        "-f"|"--failed")   eol="\033[K\r";;
+        "-f"|"--failed")   eol="\r";;
         "-h"|"--help")    usage; exit 0;;
         *) shift;;
     esac
