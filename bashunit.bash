@@ -122,7 +122,7 @@ _failed() {
         else
             failed_line=
         fi
-        echo -e "$ts:\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m${failed_line}"
+        echo -e "\033K[$ts:\033[37;1m$tc\033[0m:$line:\033[31mFailed\033[0m${failed_line}"
     fi
     if [ $verbose -eq 3 ] ; then
         echo -e "\033[31mExpected\033[0m: $(sed '2,$ s/^/          /g' <<<$2)"
