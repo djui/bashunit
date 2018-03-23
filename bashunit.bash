@@ -165,7 +165,7 @@ usage() {
     echo "Usage: <testscript> [options...]"
     echo
     echo "Options:"
-    echo "  -v, --verbose   Print exptected and provided values"
+    echo "  -v, --verbose   Print expected and provided values"
     echo "  -s, --summary   Only print summary omitting individual test results"
     echo "  -q, --quiet     Do not print anything to standard output"
     echo "  -l, --lineshow  Show failing or skipped line after line number"

@@ -44,7 +44,7 @@ $ bash ./bashunit.bash
 Usage: <testscript> [options...]
 
 Options:
-  -v, --verbose  Print exptected and provided values
+  -v, --verbose  Print expected and provided values
   -s, --summary  Only print summary omitting individual test results
   -q, --quiet    Do not print anything to standard output
   -h, --help     Show usage screen
