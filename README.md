@@ -47,6 +47,8 @@ Options:
   -v, --verbose  Print expected and provided values
   -s, --summary  Only print summary omitting individual test results
   -q, --quiet    Do not print anything to standard output
+  -l, --lineshow  Show failing or skipped line after line number
+  -f, --failed   Print only individual failed test results
   -h, --help     Show usage screen
 ```
 

@@ -7,6 +7,7 @@
 verbose=2
 caller=$0
 lineshow=0
+eol="\n"
 
 bashunit_passed=0
 bashunit_failed=0
@@ -136,7 +137,7 @@ _passed() {
     local tc=${FUNCNAME[2]}
     local line=${BASH_LINENO[1]}
     if [ $verbose -ge 2 ] ; then
-        echo -e "$ts:\033[37;1m$tc\033[0m:$line:\033[32mPassed\033[0m"
+        printf "$ts:\033[37;1m$tc\033[0m:$line:\033[32mPassed\033[0m$eol"
     fi
 }
 
@@ -153,7 +154,7 @@ _skipped() {
         else
             skipped_line=
         fi
-        echo -e "$ts:\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m${skipped_line}"
+        printf "$ts:\033[37;1m$tc\033[0m:$line:\033[33mSkipped\033[0m${skipped_line}$eol"
     fi
 }
 
@@ -169,6 +170,7 @@ usage() {
     echo "  -s, --summary   Only print summary omitting individual test results"
     echo "  -q, --quiet     Do not print anything to standard output"
     echo "  -l, --lineshow  Show failing or skipped line after line number"
+    echo "  -f, --failed    Print only individual failed test results"
     echo "  -h, --help      Show usage screen"
 }
 
@@ -200,6 +202,7 @@ while [ $# -gt 0 ]; do
         "-s"|"--summary") verbose=1;;
         "-q"|"--quiet")   verbose=0;;
         "-l"|"--lineshow") lineshow=1;;
+        "-f"|"--failed")   eol="\033[K\r";;
         "-h"|"--help")    usage; exit 0;;
         *) shift;;
     esac
